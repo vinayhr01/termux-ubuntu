@@ -10,7 +10,7 @@ sudo apt-mark hold udisks2
 sudo apt install keyboard-configuration -y
 sudo apt install tzdata -y
 sudo apt install sudo wget nano inetutils-tools dialog -y
-sudo apt install xfce4 xfce4-goodies xfce4-terminal tigervnc-standalone-server tigervnc-common dbus-x11 ffmpeg language-pack-en --no-install-recommends -y
+sudo apt install xfce4 xfce4-goodies xfce4-terminal exo-utils tigervnc-standalone-server tigervnc-common dbus-x11 ffmpeg language-pack-en --no-install-recommends -y
 sudo apt --fix-broken install
 sudo apt clean
 
@@ -61,3 +61,4 @@ vncpasswd
 wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/.profile -O $HOME/.profile.1 > /dev/null
 cat $HOME/.profile.1 >> $HOME/.profile && rm -rf $HOME/.profile.1
 source ~/.profile
+vncserver-start
