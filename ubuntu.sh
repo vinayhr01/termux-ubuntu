@@ -2,13 +2,13 @@
 pkg install wget -y
 wget "https://andronixos.sfo2.cdn.digitaloceanspaces.com/OS-Files/setup-audio.sh" && chmod +x setup-audio.sh && ./setup-audio.sh
 
-folder=ubuntu20-fs
+folder=ubuntu22-fs
 dlink="https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/APT"
 if [ -d "$folder" ]; then
 	first=1
 	echo "skipping downloading"
 fi
-tarball="ubuntu20-rootfs.tar.gz"
+tarball="ubuntu22-rootfs.tar.gz"
 
 termux-setup-storage
 
@@ -18,16 +18,10 @@ if [ "$first" != 1 ];then
 		case `dpkg --print-architecture` in
 		aarch64)
 			archurl="arm64" ;;
-		arm)
-			archurl="armhf" ;;
-		amd64)
-			archurl="amd64" ;;
-		x86_64)
-			archurl="amd64" ;;
 		*)
 			echo "unknown architecture"; exit 1 ;;
 		esac
-		wget "https://github.com/AndronixApp/AndronixOrigin/raw/master/Rootfs/Ubuntu20/focal-${archurl}.tar.gz" -O $tarball
+		wget "https://github.com/AndronixApp/AndronixOrigin/raw/master/Rootfs/Ubuntu22/jammy-${archurl}.tar.gz" -O $tarball
 
 	fi
 
@@ -39,7 +33,7 @@ if [ "$first" != 1 ];then
 	cd "$cur"
 fi
 
-mkdir -p ubuntu20-binds
+mkdir -p ubuntu22-binds
 mkdir -p ${folder}/proc/fakethings
 
 if [ ! -f "${cur}/${folder}/proc/fakethings/stat" ]; then
@@ -178,7 +172,7 @@ if [ ! -f "${cur}/${folder}/proc/fakethings/vmstat" ]; then
 	EOF
 fi
 
-bin=start-ubuntu20.sh
+bin=start-ubuntu22.sh
 echo "writing launch script"
 cat > $bin <<- EOM
 #!/bin/bash
@@ -191,8 +185,8 @@ command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
 command+=" -r $folder"
-if [ -n "\$(ls -A ubuntu20-binds)" ]; then
-	for f in ubuntu20-binds/* ;do
+if [ -n "\$(ls -A ubuntu22-binds)" ]; then
+	for f in ubuntu22-binds/* ;do
 		. \$f
 	done
 fi
@@ -200,7 +194,7 @@ command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
 command+=" -b /data"
-command+=" -b ubuntu20-fs/root:/dev/shm"
+command+=" -b ubuntu22-fs/root:/dev/shm"
 command+=" -b /proc/self/fd/2:/dev/stderr"
 command+=" -b /proc/self/fd/1:/dev/stdout"
 command+=" -b /proc/self/fd/0:/dev/stdin"
@@ -230,38 +224,38 @@ else
 fi
 EOM
 
-mkdir -p ubuntu20-fs/usr/share/andronix
-mkdir -p ubuntu20-fs/var/tmp
-rm -rf ubuntu20-fs/usr/local/bin/*
+mkdir -p ubuntu22-fs/usr/share/andronix
+mkdir -p ubuntu22-fs/var/tmp
+rm -rf ubuntu22-fs/usr/local/bin/*
 
 echo "127.0.0.1 localhost" > $folder/etc/hosts
 echo "Set disable_coredump false" > $folder/etc/sudo.conf
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/.bash_profile -O ubuntu20-fs/root/.bash_profile > /dev/null
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vnc -P ubuntu20-fs/usr/local/bin > /dev/null
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncpasswd -P ubuntu20-fs/usr/local/bin > /dev/null
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncserver-stop -P ubuntu20-fs/usr/local/bin > /dev/null
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncserver-start -P ubuntu20-fs/usr/local/bin > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/.bash_profile -O ubuntu22-fs/root/.bash_profile > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vnc -P ubuntu22-fs/usr/local/bin > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncpasswd -P ubuntu22-fs/usr/local/bin > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncserver-stop -P ubuntu22-fs/usr/local/bin > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/vncserver-start -P ubuntu22-fs/usr/local/bin > /dev/null
 
-wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/firstrun -P ubuntu20-fs/usr/share/andronix > /dev/null
+wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/firstrun -P ubuntu22-fs/usr/share/andronix > /dev/null
 
-mkdir -p ubuntu20-fs/usr/share/andronix
+mkdir -p ubuntu22-fs/usr/share/andronix
 case "$1" in
 	"nde")
 		;;
   "lxde")
-		wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/de-lxde -O ubuntu20-fs/usr/share/andronix/de-install > /dev/null
+		wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/de-lxde -O ubuntu22-fs/usr/share/andronix/de-install > /dev/null
     ;;
 	*)
-		wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/de-xfce -O ubuntu20-fs/usr/share/andronix/de-install > /dev/null
+		wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/de-xfce -O ubuntu22-fs/usr/share/andronix/de-install > /dev/null
 		;;
 esac
 
-chmod +x ubuntu20-fs/root/.bash_profile
-chmod +x ubuntu20-fs/root/.profile
-chmod +x ubuntu20-fs/usr/local/bin/vnc
-chmod +x ubuntu20-fs/usr/local/bin/vncpasswd
-chmod +x ubuntu20-fs/usr/local/bin/vncserver-start
-chmod +x ubuntu20-fs/usr/local/bin/vncserver-stop
+chmod +x ubuntu22-fs/root/.bash_profile
+chmod +x ubuntu22-fs/root/.profile
+chmod +x ubuntu22-fs/usr/local/bin/vnc
+chmod +x ubuntu22-fs/usr/local/bin/vncpasswd
+chmod +x ubuntu22-fs/usr/local/bin/vncserver-start
+chmod +x ubuntu22-fs/usr/local/bin/vncserver-stop
 
 echo "fixing shebang of $bin"
 termux-fix-shebang $bin
