@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Get the necessar components
+#Get the necessary components
 sudo apt install udisks2 -y
 echo "" > /var/lib/dpkg/info/udisks2.postinst
 sudo dpkg --configure -a
@@ -62,3 +62,4 @@ vncpasswd
 wget -q https://raw.githubusercontent.com/vinayhr01/termux-ubuntu/master/.profile -O $HOME/.profile.1 > /dev/null
 cat $HOME/.profile.1 >> $HOME/.profile && rm -rf $HOME/.profile.1
 source ~/.profile
+vncserver-start
