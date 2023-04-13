@@ -17,12 +17,11 @@ sudo apt clean
 mkdir -p ~/.vnc
 
 echo '#!/bin/bash
-[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 export PULSE_SERVER=127.0.0.1
-XAUTHORITY=$HOME/.Xauthority
-export XAUTHORITY
 LANG=en_US.UTF-8
 export LANG
+[ -x /etc/vnc/xstartup ] && /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 echo $$ > /tmp/xsession.pid
 dbus-launch --exit-with-session startxfce4 &' > ~/.vnc/xstartup
 chmod +x ~/.vnc/xstartup
