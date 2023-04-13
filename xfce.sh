@@ -25,8 +25,8 @@ export LANG
 echo $$ > /tmp/xsession.pid
 dbus-launch --exit-with-session startxfce4 &' > ~/.vnc/xstartup
 
-xrdb $HOME/.Xresources 
-startxfce4 > ~/.vnc/xstartup
+echo 'xrdb $HOME/.Xresources 
+startxfce4' > ~/.vnc/xstartup
 
 chmod +x ~/.vnc/xstartup
 
